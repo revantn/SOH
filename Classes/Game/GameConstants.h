@@ -1,0 +1,124 @@
+#ifndef _GAME_CONSTANTS_H_
+#define _GAME_CONSTANTS_H_
+
+//#define DEBUG_AI
+
+const int NUMBER_OF_SUITS = 4;
+const int CARD_COVER = 52;
+const int INVALID_CARD = -1;
+const int TURN_PASS = -2;
+
+const int HIGH_PRIOPRITY = 3;
+const int NORMAL_PRIORITY = 1;
+const int NEXT_HIGH_PRIOPRITY = 2;
+
+typedef enum  SUITS
+{
+	HEARTS,
+	DIAMONDS,
+	SPADES,
+	CLUBS,
+	SUIT_SIZE = 13
+};
+
+typedef enum CARD_DECK
+{
+	HEART_ACE = 0,
+	HEART_2,
+	HEART_3,
+	HEART_4,
+	HEART_5,
+	HEART_6,
+	HEART_7,
+	HEART_8,
+	HEART_9,
+	HEART_10,
+	HEART_JACK,
+	HEART_QUEEN,
+	HEART_KING,
+
+
+	DIAMOND_ACE,
+	DIAMOND_2,
+	DIAMOND_3,
+	DIAMOND_4,
+	DIAMOND_5,
+	DIAMOND_6,
+	DIAMOND_7,
+	DIAMOND_8,
+	DIAMOND_9,
+	DIAMOND_10,
+	DIAMOND_JACK,
+	DIAMOND_QUEEN,
+	DIAMOND_KING,
+
+
+	SPADE_ACE,
+	SPADE_2,
+	SPADE_3,
+	SPADE_4,
+	SPADE_5,
+	SPADE_6,
+	SPADE_7,
+	SPADE_8,
+	SPADE_9,
+	SPADE_10,
+	SPADE_JACK,
+	SPADE_QUEEN,
+	SPADE_KING,
+
+
+	CLUB_ACE,
+	CLUB_2,
+	CLUB_3,
+	CLUB_4,
+	CLUB_5,
+	CLUB_6,
+	CLUB_7,
+	CLUB_8,
+	CLUB_9,
+	CLUB_10,
+	CLUB_JACK,
+	CLUB_QUEEN,
+	CLUB_KING,
+	DECK_SIZE,
+
+};
+
+
+//Constants
+const int MAX_IN_HAND_CARDS = 13;
+const int MAX_PLAYERS = 4;
+
+// AI Player Wait time
+const float AI_PLAYER_WAIT_TIME = 2;//0.8f;
+//PLayer Types
+const int HUMAN_PLAYER = 0;
+const int AI_PLAYER = 1;
+//Player Turn Pattern
+typedef enum PLAYER_POSITION
+{
+	EAST,
+	NORTH,
+	WEST,
+	SOUTH
+};
+//
+
+
+
+//
+const float CARD_SCALE_FACTOR = 1.15f;
+const int PLAYER_CARD_OFFSET = 25;
+const int BOARD_CARD_OFFSET = 25;
+
+const int BOARD_Y = 170;
+const int BOARD_CARD_HOLDER_Y = 320;
+
+const int PLAYER_CARD_ZORDER = -1;
+
+const int ALL_MENU = 0;
+const int OPTIONS_MENU = 1;
+const int NOTIFICATION_MENU = 2;
+
+#endif

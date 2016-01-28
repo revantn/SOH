@@ -1,0 +1,12 @@
+
+**** Build of configuration Release for project AppActivity ****
+
+python E:/PI/SOH/SOH/proj.android/build_native.py -b release all 
+make.exe: Entering directory `E:/PI/SOH/SOH/proj.android'
+[armeabi] Install        : libcocos2dcpp.so => libs/armeabi/libcocos2dcpp.so
+make.exe: Leaving directory `E:/PI/SOH/SOH/proj.android'
+We will remove this script next version,you should use cocos console to build android project.
+
+The Selected NDK toolchain version was 4.9 !
+
+**** Build Finished ****

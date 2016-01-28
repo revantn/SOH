@@ -1,0 +1,116 @@
+#include "CardShuffler.h"
+
+//#include<stdio.h>
+#include <CCFileUtils.h>
+#include <string>
+#include "Game/GameConstants.h"
+#ifdef _WINDOWS
+#include <Windows.h>
+#elif PLATFORM_ANDROID
+#inclued <time>
+#endif
+
+FILE *CardShuffler::m_file = NULL;
+
+void CardShuffler::init()
+{
+	//int x = 0;
+#ifdef _GEN_RUNTIME_
+	index = 0;
+	srand(timeGetTime());
+	x = rand() + 1;
+	//MyLog::getLogger()->logIn("initttttttttt %d\n",x);
+	for(int i = 0; i < 52; i++)
+	{
+		_atemp[i] = 1;
+	}
+#else
+
+#ifdef PLATFORM_ANDROID
+	struct timespec now;
+	clock_gettime(CLOCK_MONOTONIC, &now);
+	srand(now.tv_nsec);
+
+#else
+	srand(timeGetTime());
+#endif
+	auto x = rand() % 30000;
+	std::string path = cocos2d::FileUtils::getInstance()->fullPathForFilename("shuffler.bin");
+	//path += "shuffler.bin";
+	//m_file = NULL;
+	cocos2d::log("Card shuffler Path %s", path.c_str);
+	m_file = fopen( path.c_str(), "rb");
+
+	if(!m_file)
+		exit(-1);
+	long offset = x * 52 * sizeof(int);
+	fseek(m_file, offset ,SEEK_SET);
+#endif
+}
+CardShuffler::~CardShuffler()
+{
+	//fclose(m_file);
+}
+
+
+//bool CardShuffler::validate(int card)
+//{
+//	
+//	if(card < 0)
+//		return false;
+//	if(_atemp[card] == 1)
+//	{
+//		_atemp[card] = 0;
+//		//MyLog::getLogger()->logIn("\ncardeeeeeeeeeeeee %d\n", card);
+//		return true;
+//	}
+//	return false;
+//}
+
+//int CardShuffler::genRandomNO()
+//{
+//		auto time_ms = timeGetTime();
+//		int x = (time_ms * x) % 52;	
+//		//if(index == SuitEND )
+//		//	return SuitEND;
+//		if(validate(x))
+//		{
+//			return x;
+//		}
+//		//if( x <= 0)
+//		{
+//			srand(timeGetTime());
+//			x = rand()% 52;	
+//			//MyLog::getLogger()->logIn("xxxxxx %d\n", x);
+//			return -1;
+//		}
+//		//index++;
+//	//	MyLog::getLogger()->logIn("innnnnnnnnnn %d\n", index);
+//		return -1;
+//
+//}
+
+
+void CardShuffler::shuffleCards(int *cardPack)
+{
+#ifdef _GEN_RUNTIME_
+	int _iTemp;
+	for(int i=0 ;i < SUITEND; i++)
+	{
+		_iTemp = genRandomNO();
+
+		if(_iTemp != -1)
+		{
+			*cardPack = _iTemp;
+			cardPack++;
+			//MyLog::getLogger()->logIn("itempppppppp %d",i);
+		}
+		else
+			i--;
+
+	}
+#else
+		int t = fread(cardPack, sizeof(int), 52, m_file);
+#endif
+
+}

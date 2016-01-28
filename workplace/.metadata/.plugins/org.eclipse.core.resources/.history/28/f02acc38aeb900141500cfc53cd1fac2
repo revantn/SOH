@@ -1,0 +1,265 @@
+#include "Board.h"
+#include "CardDeck.h"
+#include "AIPlayer.h"
+#include "BoardState.h"
+USING_NS_CC;
+
+Scene* Board::createScene()
+{
+	// 'scene' is an autorelease object
+	auto scene = Scene::create();
+
+	// 'layer' is an autorelease object
+	auto layer = Board::create();
+
+	// add layer as a child to scene
+	scene->addChild(layer);
+	
+	// return the scene
+	return scene;
+}
+
+
+bool Board::init()
+{
+	if (!CCLayerColor::initWithColor(ccc4(10, 93, 41, 255)))
+		return false;
+	m_playerTurn = -1;
+	m_wait = 0;
+	this->scheduleUpdate();
+	setZOrder(-500);
+	initCardHolders();
+	m_boardState = new BoardState();
+	m_boardState->init();
+	m_cardDeck = CardDeck::getInstance();
+	m_cardDeck->init();
+	m_cardDeck->shuffleDeck();
+	initPlayers();
+	
+	
+	
+	return true;
+}
+
+void Board::initPlayers()
+{
+	for (int i = 0; i < MAX_PLAYERS; i++)
+	{
+		if (i == PLAYER_POSITION::SOUTH)
+		{
+			m_players[i] = new Player(i, HUMAN_PLAYER);
+			m_players[i]->init(m_cardDeck->getCardDeck() + (i * MAX_IN_HAND_CARDS), &m_playerTurn);
+		}
+		else
+		{
+			m_players[i] = new AIPlayer(i, AI_PLAYER);
+			m_players[i]->init(m_cardDeck->getCardDeck() + (i * MAX_IN_HAND_CARDS), &m_playerTurn);
+		}
+				addChild(m_players[i]);
+	}
+}
+
+
+void Board::initCardHolders()
+{
+	char path[256];
+	Vec2 size = cocos2d::Director::getInstance()->getWinSize();
+	sprintf(path, "%s/%s", "board", "HEART_EMPTY.tga");
+	m_cardHolder[HEARTS]= Card::createCard(path);
+
+	sprintf(path, "%s/%s", "board", "DIAMOND_EMPTY.tga");
+	m_cardHolder[DIAMONDS]= Card::createCard(path);
+
+	sprintf(path, "%s/%s", "board", "SPADES_EMPTY.tga");
+	m_cardHolder[SPADES] = Card::createCard(path);
+
+	sprintf(path, "%s/%s", "board", "CLUB_EMPTY.tga");
+	m_cardHolder[CLUBS] = Card::createCard(path);
+	for (int i = 0; i < NUMBER_OF_SUITS; i++)
+	{
+		m_cardHolder[i]->setPosition((size.x/2.75) + ( i * 100), 300);
+		m_cardHolder[i]->setScale(1.2);
+		m_cardHolder[i]->setFlipY(true);
+		addChild(m_cardHolder[i], 0);
+	}
+	for (int i = 0; i < SUIT_SIZE; i++)
+	{
+		m_heartsHolder[i] = INVALID_CARD;
+		m_diamondsHolder[i] = INVALID_CARD;
+		m_spadesHolder[i] = INVALID_CARD;
+		m_clubsHolder[i] = INVALID_CARD;
+	}
+}
+
+
+void Board::update(float dt)
+{
+
+	auto selectedCard = m_players[m_playerTurn]->throwCard();
+	if (selectedCard == INVALID_CARD)
+		return;
+	if (selectedCard == TURN_PASS || validateCard(selectedCard))
+	{
+		if (m_players[m_playerTurn]->getPlayerType() == AI_PLAYER)
+		{
+			m_wait += dt;
+			if (m_wait > AI_PLAYER_WAIT_TIME)
+			{
+				m_playerTurn = (m_playerTurn + 1) % MAX_PLAYERS;
+				m_wait = 0;
+			}
+		}
+		else 
+		{
+			auto card = m_cardDeck->getCard(selectedCard);
+			card->returnToPosition();
+			card->resetSelectedCard();
+
+		}
+	}
+		
+	Card::resetSelectedCard();
+}
+bool Board::validateCard(int card)
+{
+	auto selectedCard = m_cardDeck->getCard(card);
+	auto pos = selectedCard->getPosition();
+	cocos2d::Rect rect;
+	//if (m_boardState->isValidCard(card))
+	{
+		switch (card / SUIT_SIZE)
+		{
+		case HEARTS:
+			for (int i = 0; i < SUIT_SIZE; i++)
+			{
+				if (m_heartsHolder[i] == INVALID_CARD && card != HEART_7)
+					continue;
+				Card *cardSprite = NULL;
+
+				if (card == HEART_7)
+					cardSprite =m_cardHolder[HEARTS];
+				else 
+					cardSprite = m_cardDeck->getCard(m_heartsHolder[i]);
+
+				rect = cardSprite->getBoundingBox();
+				if (rect.containsPoint(pos))
+				{
+					if (m_boardState->isValidCard(card))
+					{
+						int	y = BOARD_Y + ((card % SUIT_SIZE) * BOARD_CARD_OFFSET);
+						selectedCard->setCardPosition(m_cardHolder[HEARTS]->getPositionX(), y);
+						selectedCard->setGlobalZOrder((SUIT_SIZE - (card % SUIT_SIZE)) + 200);
+						//reorderChild(selectedCard, (card % SUIT_SIZE) - 300);
+						m_heartsHolder[(card % SUIT_SIZE)] = card;
+						return true;// to indicate that we have consumed it.
+					}
+				}
+			}
+			break;
+		case DIAMONDS:
+			for (int i = 0; i < SUIT_SIZE; i++)
+			{
+				if (m_diamondsHolder[i] == INVALID_CARD && card != DIAMOND_7)
+					continue;
+				Card *cardSprite = NULL;
+
+				if (card == DIAMOND_7)
+					cardSprite = m_cardHolder[DIAMONDS];
+				else
+					cardSprite = m_cardDeck->getCard(m_diamondsHolder[i]);
+
+				rect = cardSprite->getBoundingBox();
+				if (rect.containsPoint(pos))
+				{
+					if (m_boardState->isValidCard(card))
+					{
+						int	y = BOARD_Y + ((card % SUIT_SIZE) * BOARD_CARD_OFFSET);
+						selectedCard->setCardPosition(m_cardHolder[DIAMONDS]->getPositionX(), y);
+						//selectedCard->setZOrder(i);
+						m_diamondsHolder[(card % SUIT_SIZE)] = card;
+						return true;// to indicate that we have consumed it.
+					}
+				}
+			}
+			break;
+		case SPADES:
+			for (int i = 0; i < SUIT_SIZE; i++)
+			{
+				if (m_spadesHolder[i] == INVALID_CARD && card != SPADE_7)
+					continue;
+				Card *cardSprite = NULL;
+
+				if (card == SPADE_7)
+					cardSprite = m_cardHolder[SPADES];
+				else
+					cardSprite = m_cardDeck->getCard(m_spadesHolder[i]);
+
+				rect = cardSprite->getBoundingBox();
+				if (rect.containsPoint(pos))
+				{
+					if (m_boardState->isValidCard(card))
+					{
+						int	y = BOARD_Y + ((card % SUIT_SIZE) * BOARD_CARD_OFFSET);
+						selectedCard->setCardPosition(m_cardHolder[SPADES]->getPositionX(), y);
+						//selectedCard->setZOrder(i);
+						m_spadesHolder[(card % SUIT_SIZE)] = card;
+						return true;// to indicate that we have consumed it.
+					}
+				}
+			}
+			break;
+		case CLUBS:
+			for (int i = 0; i < SUIT_SIZE; i++)
+			{
+				if (m_clubsHolder[i] == INVALID_CARD && card != CLUB_7)
+					continue;
+				Card *cardSprite = NULL;
+
+				if (card == CLUB_7)
+					cardSprite = m_cardHolder[CLUBS];
+				else
+					cardSprite = m_cardDeck->getCard(m_clubsHolder[i]);
+
+				rect = cardSprite->getBoundingBox();
+				if (rect.containsPoint(pos))
+				{
+					if (m_boardState->isValidCard(card))
+					{
+						int	y = BOARD_Y + ((card % SUIT_SIZE) * BOARD_CARD_OFFSET);
+						selectedCard->setCardPosition(m_cardHolder[CLUBS]->getPositionX(), y);
+						//selectedCard->setZOrder(i);
+						m_clubsHolder[(card % SUIT_SIZE)] = card;
+						return true;// to indicate that we have consumed it.
+					}
+				}
+			}
+			break;
+		default:
+			selectedCard->returnToPosition();
+			break;
+		}
+	}
+	return true;
+}
+void Board::menuCloseCallback(Ref* pSender)
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.", "Alert");
+	return;
+#endif
+
+	Director::getInstance()->end();
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+	exit(0);
+#endif
+}
+
+
+Board::~Board()
+{
+	delete m_boardState;
+}
+
+
+

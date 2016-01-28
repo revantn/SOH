@@ -1,0 +1,44 @@
+﻿Build started 28-01-2016 AM 12:20:03.
+     1>Project "E:\PI\SOH_client\SOH\cocos2d\cocos\2d\libcocos2d.vcxproj" on node 2 (Build target(s)).
+     1>PreLinkEvent:
+         if not exist "E:\PI\SOH_client\SOH\proj.win32\Debug.win32\" mkdir "E:\PI\SOH_client\SOH\proj.win32\Debug.win32\"
+         xcopy /Y /Q "E:\PI\SOH_client\SOH\cocos2d\cocos\2d\..\..\external\freetype2\prebuilt\win32\*.*" "E:\PI\SOH_client\SOH\proj.win32\Debug.win32\"
+         xcopy /Y /Q "E:\PI\SOH_client\SOH\cocos2d\cocos\2d\..\..\external\glfw3\prebuilt\win32\*.*" "E:\PI\SOH_client\SOH\proj.win32\Debug.win32\"
+         xcopy /Y /Q "E:\PI\SOH_client\SOH\cocos2d\cocos\2d\..\..\external\curl\prebuilt\win32\*.*" "E:\PI\SOH_client\SOH\proj.win32\Debug.win32\"
+         xcopy /Y /Q "E:\PI\SOH_client\SOH\cocos2d\cocos\2d\..\..\external\jpeg\prebuilt\win32\*.*" "E:\PI\SOH_client\SOH\proj.win32\Debug.win32\"
+         xcopy /Y /Q "E:\PI\SOH_client\SOH\cocos2d\cocos\2d\..\..\external\png\prebuilt\win32\*.*" "E:\PI\SOH_client\SOH\proj.win32\Debug.win32\"
+         xcopy /Y /Q "E:\PI\SOH_client\SOH\cocos2d\cocos\2d\..\..\external\tiff\prebuilt\win32\*.*" "E:\PI\SOH_client\SOH\proj.win32\Debug.win32\"
+         xcopy /Y /Q "E:\PI\SOH_client\SOH\cocos2d\cocos\2d\..\..\external\webp\prebuilt\win32\*.*" "E:\PI\SOH_client\SOH\proj.win32\Debug.win32\"
+         xcopy /Y /Q "E:\PI\SOH_client\SOH\cocos2d\cocos\2d\..\..\external\websockets\prebuilt\win32\*.*" "E:\PI\SOH_client\SOH\proj.win32\Debug.win32\"
+         xcopy /Y /Q "E:\PI\SOH_client\SOH\cocos2d\cocos\2d\..\..\external\win32-specific\zlib\prebuilt\*.*" "E:\PI\SOH_client\SOH\proj.win32\Debug.win32\"
+         xcopy /Y /Q "E:\PI\SOH_client\SOH\cocos2d\cocos\2d\..\..\external\win32-specific\icon\prebuilt\*.*" "E:\PI\SOH_client\SOH\proj.win32\Debug.win32\"
+         xcopy /Y /Q "E:\PI\SOH_client\SOH\cocos2d\cocos\2d\..\..\external\win32-specific\gles\prebuilt\*.*" "E:\PI\SOH_client\SOH\proj.win32\Debug.win32\"
+         xcopy /Y /Q "E:\PI\SOH_client\SOH\cocos2d\cocos\2d\..\..\external\win32-specific\OpenalSoft\prebuilt\*.*" "E:\PI\SOH_client\SOH\proj.win32\Debug.win32\"
+         xcopy /Y /Q "E:\PI\SOH_client\SOH\cocos2d\cocos\2d\..\..\external\win32-specific\MP3Decoder\prebuilt\*.*" "E:\PI\SOH_client\SOH\proj.win32\Debug.win32\"
+         xcopy /Y /Q "E:\PI\SOH_client\SOH\cocos2d\cocos\2d\..\..\external\win32-specific\OggDecoder\prebuilt\*.*" "E:\PI\SOH_client\SOH\proj.win32\Debug.win32\"
+         xcopy /Y /Q "E:\PI\SOH_client\SOH\cocos2d\cocos\2d\..\..\external\sqlite3\libraries\win32\*.*" "E:\PI\SOH_client\SOH\proj.win32\Debug.win32\"
+         xcopy /Y /Q "E:\PI\SOH_client\SOH\cocos2d\cocos\2d\..\..\external\chipmunk\prebuilt\win32\debug-lib\*.*" "E:\PI\SOH_client\SOH\proj.win32\Debug.win32\"
+         :VCEnd
+         1 File(s) copied
+         1 File(s) copied
+         2 File(s) copied
+         1 File(s) copied
+         1 File(s) copied
+         2 File(s) copied
+         1 File(s) copied
+         2 File(s) copied
+         2 File(s) copied
+         2 File(s) copied
+         2 File(s) copied
+         2 File(s) copied
+         2 File(s) copied
+         6 File(s) copied
+         2 File(s) copied
+         1 File(s) copied
+       Link:
+         libcocos2d.vcxproj -> E:\PI\SOH_client\SOH\proj.win32\Debug.win32\libcocos2d.dll
+     1>Done Building Project "E:\PI\SOH_client\SOH\cocos2d\cocos\2d\libcocos2d.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.71
